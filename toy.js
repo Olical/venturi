@@ -65,6 +65,8 @@ DI.prototype.get = function () {
 	di.get('foo');
 
 
+
+
 	var someModule = di.module('test');
 
 	someModule.set('bar', function () {
@@ -76,4 +78,18 @@ DI.prototype.get = function () {
 	});
 
 	someModule.get('foo');
+
+
+
+
+
+	var someDeeperModule = someModule.module('test-deeper');
+
+	someDeeperModule.set('foo', function (di) {
+		console.log('THE NEXT ONE IS ACTUALLY A SUB-SUB-MODULE!');
+		var deps = di.get('bar');
+		deps.bar.run();
+	});
+
+	someDeeperModule.get('foo');
 }());
