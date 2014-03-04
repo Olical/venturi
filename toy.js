@@ -69,10 +69,16 @@ DI.prototype.get = function () {
 
 	var someModule = di.module('test');
 
-	someModule.set('bar', function () {
+	someModule.set('extraMessage', function () {
+		return 'module';
+	});
+
+	someModule.set('bar', function (di) {
+		var deps = di.get('extraMessage');
+
 		return {
 			run: function () {
-				console.log('EXECUTED - module!');
+				console.log('EXECUTED - ' + deps.extraMessage + '!');
 			}
 		};
 	});
@@ -85,10 +91,8 @@ DI.prototype.get = function () {
 
 	var someDeeperModule = someModule.module('test-deeper');
 
-	someDeeperModule.set('foo', function (di) {
-		console.log('THE NEXT ONE IS ACTUALLY A SUB-SUB-MODULE!');
-		var deps = di.get('bar');
-		deps.bar.run();
+	someDeeperModule.set('extraMessage', function () {
+		return 'sub-module';
 	});
 
 	someDeeperModule.get('foo');
