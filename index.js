@@ -15,13 +15,7 @@
 function Venturi(parentConstructors) {
 	this.instances = {};
 	this.modules = {};
-
-	if (parentConstructors) {
-		this.constructors = Object.create(parentConstructors);
-	}
-	else {
-		this.constructors = {};
-	}
+	this.constructors = Object.create(parentConstructors || {});
 }
 
 /**
