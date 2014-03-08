@@ -21,7 +21,7 @@ describe('Inheritance', function () {
 				two: sinon.stub().returns(2)
 			};
 
-			childInjector = injector.module('child');
+			childInjector = injector.module();
 			injector.set('one', stubs.one);
 			childInjector.set('two', stubs.two);
 		});

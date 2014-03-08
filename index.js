@@ -7,8 +7,7 @@
  * modules.
  *
  * This argument should not be used directly though, please use the module
- * method instead. This makes sure your module is registered within the module
- * tree.
+ * method instead.
  *
  * @param {Object} [parentConstructors] Optional prototype for the constructors object.
  */
@@ -19,14 +18,12 @@ function Venturi(parentConstructors) {
 }
 
 /**
- * Instantiates and returns a new sub-module object under the provided name.
+ * Instantiates and returns a new sub-module object that inherits from the instance you created it with.
  *
- * @param {String} name
- * @return {Object} A new Venturi instance which is registered as a module of the parent it was constructed by.
+ * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
-Venturi.prototype.module = function (name) {
-	this.modules[name] = new Venturi(this.constructors);
-	return this.modules[name];
+Venturi.prototype.module = function () {
+	return new Venturi(this.constructors);
 };
 
 /**
