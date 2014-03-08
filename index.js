@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 /**
  * A hierarchical dependency injector.
  *
@@ -11,7 +13,7 @@ function Venturi(links, parent) {
 
 	if (parent) {
 		this.parent = parent;
-		parentConstructors = Object.create(parent.constructors);
+		parentConstructors = _.create(parent.constructors);
 	}
 
 	this.instances = {};
@@ -34,7 +36,7 @@ function Venturi(links, parent) {
  * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
 Venturi.prototype.module = function () {
-	var links = Array.prototype.slice.call(arguments);
+	var links = _.toArray(arguments);
 	return new Venturi(links, this);
 };
 
@@ -58,13 +60,10 @@ Venturi.prototype.set = function (key, constructor) {
  */
 Venturi.prototype.get = function () {
 	var dependencies = {};
-	var key;
-	var i;
 
-	for (i = 0; i < arguments.length; i++) {
-		key = arguments[i];
+	_.forEach(arguments, function (key) {
 		dependencies[key] = this.getOrConstruct(key);
-	}
+	}, this);
 
 	return dependencies;
 };
@@ -84,8 +83,8 @@ Venturi.prototype.getOrConstruct = function (key) {
 	var constructor = this.constructors[key];
 	var fromLinks = this.getFromLinks(key);
 
-	if (!this.instances.hasOwnProperty(key)) {
-		if (typeof constructor === 'function') {
+	if (!_.has(this.instances, key)) {
+		if (_.isFunction(constructor)) {
 			this.instances[key] = constructor(this);
 		}
 	}
