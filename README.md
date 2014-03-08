@@ -2,6 +2,8 @@
 
 Hierarchical JavaScript dependency injection.
 
+It's named after the [Venturi effect][] which is used within [injectors][]. I thought it was a bit more interesting and unique than "HierarchicalDependencyInjector".
+
 ## Unlicense
 
 This is free and unencumbered software released into the public domain.
@@ -29,4 +31,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
 
-[homepage]: http://oli.me.uk/
+[venturi effect]: https://en.wikipedia.org/wiki/Venturi_effect
+[injectors]: https://en.wikipedia.org/wiki/Injector
