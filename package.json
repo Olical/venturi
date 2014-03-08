@@ -1,0 +1,25 @@
+{
+  "name": "venturi",
+  "version": "0.0.0",
+  "description": "Hierarchical dependency injection",
+  "scripts": {
+    "test": "gulp"
+  },
+  "keywords": [
+    "di",
+    "dependency injection",
+    "dependencies",
+    "injector"
+  ],
+  "author": {
+    "name": "Oliver Caldwell",
+    "url": "http://oli.me.uk/"
+  },
+  "license": "Unlicense",
+  "devDependencies": {
+    "gulp": "^3.5.5",
+    "should": "^3.1.3",
+    "gulp-mocha": "^0.4.1",
+    "gulp-jshint": "^1.5.0"
+  }
+}
