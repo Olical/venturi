@@ -9,12 +9,18 @@
  * This argument should not be used directly though, please use the module
  * method instead.
  *
- * @param {Object} [parentConstructors] Optional prototype for the constructors object.
+ * @param {Object} [parent] Optional parent object to build child instances with.
  */
-function Venturi(parentConstructors) {
+function Venturi(parent) {
+	var parentConstructors;
+
+	if (parent) {
+		parentConstructors = Object.create(parent.constructors);
+	}
+
 	this.instances = {};
 	this.modules = {};
-	this.constructors = Object.create(parentConstructors || {});
+	this.constructors = parentConstructors || {};
 }
 
 /**
@@ -23,7 +29,7 @@ function Venturi(parentConstructors) {
  * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
 Venturi.prototype.module = function () {
-	return new Venturi(this.constructors);
+	return new Venturi(this);
 };
 
 /**
