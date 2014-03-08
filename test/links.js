@@ -39,6 +39,19 @@ describe('Links', function () {
 				providerResult.foo.two.should.equal(2);
 				consumerResult.foo.one.should.equal(1);
 			});
+
+			describe('where the consumer has overriden the desired dependency', function () {
+				beforeEach(function () {
+					consumingInjector.set('foo', function () {
+						return {baz:true};
+					});
+
+					it('should use the local value, not the linked one', function () {
+						var result = consumingInjector.get('foo');
+						result.foo.should.have.property('baz', true);
+					});
+				});
+			});
 		});
 	});
 });
