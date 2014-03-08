@@ -3,12 +3,14 @@
 /**
  * A hierarchical dependency injector.
  *
+ * @param {Object[]} [links] Optional array of linked venturi instances to ask for dependencies when it can't be found in the current instance.
  * @param {Object} [parent] Optional parent venturi instance to inherit constructors from.
  */
-function Venturi(parent) {
+function Venturi(links, parent) {
 	var parentConstructors;
 
 	if (parent) {
+		this.parent = parent;
 		parentConstructors = Object.create(parent.constructors);
 	}
 
@@ -23,10 +25,17 @@ function Venturi(parent) {
  * instances from the parent, so each module keeps it's own instances of the
  * constructors.
  *
+ * You can also pass a variable amount of venturi instances as arguments. These
+ * will be used to link this object to the others you specify. The leftmost
+ * object will take precedence over those to the right of it. So when you run a
+ * get it will ask these if they also have the dependency you're looking for.
+ *
+ * @param {...Object} arguments Venturi instances you wish to link this one to.
  * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
 Venturi.prototype.module = function () {
-	return new Venturi(this);
+	var links = Array.prototype.slice.call(arguments);
+	return new Venturi(links, this);
 };
 
 /**
@@ -73,12 +82,26 @@ Venturi.prototype.get = function () {
  */
 Venturi.prototype.getOrConstruct = function (key) {
 	var constructor = this.constructors[key];
+	var fromLinks = this.getFromLinks(key);
 
-	if (!this.instances.hasOwnProperty(key) && typeof constructor === 'function') {
-		this.instances[key] = constructor(this);
+	if (!this.instances.hasOwnProperty(key)) {
+		if (typeof constructor === 'function') {
+			this.instances[key] = constructor(this);
+		}
 	}
 
 	return this.instances[key];
+};
+
+/**
+ * Attempts to fetch the desired dependency from any linked objects this may
+ * have. Instances are shared between links. This method is used by
+ * getOrConstruct, you're better off using the high level get method.
+ *
+ * @param {String} key
+ * @return {*} Potential instance returned by a linked object.
+ */
+Venturi.prototype.getFromLinks = function (key) {
 };
 
 module.exports = Venturi;
