@@ -18,7 +18,10 @@ gulp.task('lint', function () {
 
 gulp.task('test', function () {
 	return gulp.src(paths.tests)
-		.pipe(mocha());
+		.pipe(mocha())
+		.on('error', function () {
+			this.emit('end');
+		});
 });
 
 gulp.task('default', ['lint', 'test']);
