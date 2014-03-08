@@ -1,15 +1,9 @@
 'use strict';
 
 /**
- * A hierarchical dependency injector. This constructor accepts an object to
- * use as the prototype when instantiating the constructors object. This allows
- * you to build a tree of inheritance for constructors available to different
- * modules.
+ * A hierarchical dependency injector.
  *
- * This argument should not be used directly though, please use the module
- * method instead.
- *
- * @param {Object} [parent] Optional parent object to build child instances with.
+ * @param {Object} [parent] Optional parent object to build child instances with. Inherits constructors and links.
  */
 function Venturi(parent) {
 	var parentConstructors;
