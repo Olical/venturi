@@ -54,15 +54,31 @@ Venturi.prototype.get = function () {
 
 	for (i = 0; i < arguments.length; i++) {
 		key = arguments[i];
-
-		if (!this.instances[key] && typeof this.constructors[key] === 'function') {
-			this.instances[key] = this.constructors[key](this);
-		}
-
-		dependencies[key] = this.instances[key];
+		dependencies[key] = this.getOrConstruct(key);
 	}
 
 	return dependencies;
+};
+
+/**
+ * Fetches a single dependency, it will construct it if not found within the
+ * instances object. Not intended to be used directly, you should use it
+ * through the get method which packs your dependencies into an object.
+ *
+ * The constructors are called with this venturi instance as their first
+ * argument.
+ *
+ * @param {String} key
+ * @return {*} Potentially cached response from the constructor.
+ */
+Venturi.prototype.getOrConstruct = function (key) {
+	var constructor = this.constructors[key];
+
+	if (!this.instances.hasOwnProperty(key) && typeof constructor === 'function') {
+		this.instances[key] = constructor(this);
+	}
+
+	return this.instances[key];
 };
 
 module.exports = Venturi;
