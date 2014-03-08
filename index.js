@@ -3,7 +3,7 @@
 /**
  * A hierarchical dependency injector.
  *
- * @param {Object} [parent] Optional parent object to build child instances with. Inherits constructors and links.
+ * @param {Object} [parent] Optional parent venturi instance to inherit constructors from.
  */
 function Venturi(parent) {
 	var parentConstructors;
@@ -18,7 +18,10 @@ function Venturi(parent) {
 }
 
 /**
- * Instantiates and returns a new sub-module object that inherits from the instance you created it with.
+ * Instantiates and returns a new sub-module object that inherits constructors
+ * from the instance you created it with. The new module will not inherit
+ * instances from the parent, so each module keeps it's own instances of the
+ * constructors.
  *
  * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
