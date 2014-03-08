@@ -12,6 +12,11 @@ describe('Basic', function () {
 		injector = new Venturi();
 	});
 
+	it('should return an object with the requested dependency set to undefined if it was not found', function () {
+		var result = injector.get('foo');
+		result.should.have.property('foo', undefined);
+	});
+
 	describe('given an injector with an injected constructor', function () {
 		var constructorSpy;
 
