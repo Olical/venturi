@@ -11,6 +11,26 @@ describe('Inheritance', function () {
 		injector = new Venturi();
 	});
 
+	describe('given an injector that contains an object and a sub-module', function () {
+		var childInjector;
+
+		beforeEach(function () {
+			childInjector = injector.module();
+			injector.set('foo', function () {
+				return {};
+			});
+		});
+
+		it('should not share instances between inherited modules', function () {
+			var parentResult = injector.get('foo');
+			var childResult = childInjector.get('foo');
+			parentResult.foo.bar = true;
+			childResult.foo.baz = true;
+			childResult.foo.should.not.have.property('bar');
+			parentResult.foo.should.not.have.property('baz');
+		});
+	});
+
 	describe('given an injector with a value and a sub-module with a value', function () {
 		var stubs;
 		var childInjector;
