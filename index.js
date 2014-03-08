@@ -80,11 +80,33 @@ Venturi.prototype.get = function () {
  * @return {*} Potentially cached response from the constructor.
  */
 Venturi.prototype.getOrConstruct = function (key) {
-	var constructor = this.constructors[key];
-	var fromLinks = this.getFromLinks(key);
+	var localConstructor = this.constructors[key];
+	var matches = {};
+	var constructor;
 
 	if (!_.has(this.instances, key)) {
-		if (_.isFunction(constructor)) {
+		if (_.isFunction(localConstructor)) {
+			if (_.has(this.constructors, key)) {
+				matches.direct = localConstructor;
+			}
+			else {
+				matches.inherited = localConstructor;
+			}
+		}
+
+		matches.link = this.getFromLinks(key);
+
+		if (matches.direct) {
+			constructor = matches.direct;
+		}
+		else if (matches.inherited && !matches.link) {
+			constructor = matches.inherited;
+		}
+		else if (matches.link) {
+			constructor = matches.link;
+		}
+
+		if (constructor) {
 			this.instances[key] = constructor(this);
 		}
 	}
