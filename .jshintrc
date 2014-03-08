@@ -1,12 +1,9 @@
 {
 	"predef": {
-		"define": true,
-		"suite": true,
-		"test": true,
-		"assert": true,
-		"setup": true,
-		"btoa": true,
-		"sinon": true
+		"describe": true,
+		"beforeEach": true,
+		"afterEach": true,
+		"it": true
 	},
 	"bitwise": true,
 	"camelcase": true,
