@@ -1,4 +1,4 @@
-# Venturi
+# Venturi [![Travis CI state][travis-state]][travis]
 
 Hierarchical JavaScript dependency injection. It's named after the [Venturi effect][] which is used within [injectors][]. I thought it was a bit more interesting and unique than `HierarchicalDependencyInjector`.
 
@@ -170,3 +170,5 @@ For more information, please refer to <http://unlicense.org/>
 [venturi effect]: https://en.wikipedia.org/wiki/Venturi_effect
 [injectors]: https://en.wikipedia.org/wiki/Injector
 [di]: https://en.wikipedia.org/wiki/Dependency_injection
+[travis]: https://travis-ci.org/Wolfy87/venturi
+[travis-state]: https://travis-ci.org/Wolfy87/venturi.png
