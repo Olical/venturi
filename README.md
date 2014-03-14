@@ -1,8 +1,144 @@
 # Venturi
 
-Hierarchical JavaScript dependency injection.
+Hierarchical JavaScript dependency injection. It's named after the [Venturi effect][] which is used within [injectors][]. I thought it was a bit more interesting and unique than `HierarchicalDependencyInjector`.
 
-It's named after the [Venturi effect][] which is used within [injectors][]. I thought it was a bit more interesting and unique than "HierarchicalDependencyInjector".
+The main premise of this little [DI][] library is prototypical inheritance of constructor functions, also known as factories. But you're not just limited to a strict tree. You can link one module to another which will cause the linked constructors to propagate down the consumer's tree. A link shares instances, so you can keep a shared object in DI, but inheritance doesn't, that just shares constructors.
+
+## No idea what I'm talking about?
+
+```
+        A
+       / \
+      D   B
+     / \   \
+    E   F   C
+```
+
+This crude ASCII tree represents a DI hierarchy; C inherits from B which inherits from A. So if you define a value in A, B and C will be able to see it. But what if you want the D section of the tree to have access to things in B? That's where you create a link. This link allows D to access things only defined within the B module, by extension, the E and F modules will also then have access to them.
+
+So you can build a tree of constructor inheritance and link sections of the tree where required to provide a shared DI container and constructor pool. This may all be a little confusing still, so please checkout the tests and the source file for the best possible examples as to how you should actually use this. Here's some simple examples to get you going though.
+
+## Examples
+
+### Basic
+
+```javascript
+var injector = new Venturi();
+
+injector.set('foo', function () {
+    return {
+        message: 'FOO!'
+    };
+});
+
+injector.set('bar', function () {
+    return {
+        message: 'BAR!'
+    };
+});
+
+injector.get('foo', 'bar');
+
+/*
+{
+    foo: {
+        message: 'FOO!'
+    },
+    bar: {
+        message: 'BAR!'
+    }
+}
+*/
+```
+
+### Inheritance
+
+```javascript
+var injector = new Venturi();
+var childInjector = injector.module();
+
+injector.set('foo', function () {
+    return {
+        message: 'FOO!'
+    };
+});
+
+childInjector.set('bar', function () {
+    return {
+        message: 'BAR!'
+    };
+});
+
+childInjector.get('foo', 'bar');
+
+/*
+{
+    foo: {
+        message: 'FOO!'
+    },
+    bar: {
+        message: 'BAR!'
+    }
+}
+*/
+```
+
+### Overriding inheritance
+
+```javascript
+var injector = new Venturi();
+var childInjector = injector.module();
+
+injector.set('foo', function () {
+    return {
+        message: 'FOO!'
+    };
+});
+
+childInjector.set('bar', function () {
+    return {
+        message: 'BAR!'
+    };
+});
+
+childInjector.set('foo', function () {
+    return false;
+});
+
+childInjector.get('foo', 'bar');
+
+/*
+{
+    foo: false,
+    bar: {
+        message: 'BAR!'
+    }
+}
+*/
+
+// But the original is still fine.
+injector.get('foo');
+
+/*
+{
+    foo: {
+        message: 'FOO!'
+    }
+}
+*/
+```
+
+### Links
+
+```javascript
+var injector = new Venturi();
+var childInjector = injector.module();
+var linkedInjector = injector.module(childInjector);
+
+// Linked has access to everything in the child and root with a shared instance pool.
+// Despite the shared bool, the linked injector can still override dependencies if it wants to.
+// Links are gathered up the tree, so each child inherits it's parents links!
+```
 
 ## Unlicense
 
@@ -33,3 +169,4 @@ For more information, please refer to <http://unlicense.org/>
 
 [venturi effect]: https://en.wikipedia.org/wiki/Venturi_effect
 [injectors]: https://en.wikipedia.org/wiki/Injector
+[di]: https://en.wikipedia.org/wiki/Dependency_injection
