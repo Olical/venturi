@@ -19,6 +19,7 @@ function Venturi(links, parent) {
 	this.instances = {};
 	this.modules = {};
 	this.constructors = parentConstructors || {};
+	this.links = links || [];
 }
 
 /**
@@ -83,6 +84,7 @@ Venturi.prototype.getOrConstruct = function (key) {
 	var localConstructor = this.constructors[key];
 	var matches = {};
 	var constructor;
+	var instance;
 
 	if (!_.has(this.instances, key)) {
 		if (_.isFunction(localConstructor)) {
@@ -103,11 +105,11 @@ Venturi.prototype.getOrConstruct = function (key) {
 			constructor = matches.inherited;
 		}
 		else if (matches.link) {
-			constructor = matches.link;
+			instance = matches.link;
 		}
 
-		if (constructor) {
-			this.instances[key] = constructor(this);
+		if (instance || constructor) {
+			this.instances[key] = instance || constructor(this);
 		}
 	}
 
@@ -123,6 +125,21 @@ Venturi.prototype.getOrConstruct = function (key) {
  * @return {*} Potential instance returned by a linked object.
  */
 Venturi.prototype.getFromLinks = function (key) {
+	var instance;
+
+	_.forEach(this.links, function (link) {
+		instance = link.getOrConstruct(key);
+
+		if (!_.isUndefined(instance)) {
+			return false;
+		}
+	});
+
+	if (_.isUndefined(instance) && this.parent) {
+		instance = this.parent.getFromLinks(key);
+	}
+
+	return instance;
 };
 
 module.exports = Venturi;

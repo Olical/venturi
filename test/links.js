@@ -52,6 +52,19 @@ describe('Links', function () {
 					});
 				});
 			});
+
+			describe('where there is another level of inheritence with no links', function () {
+				var subConsumingInjector;
+
+				beforeEach(function () {
+					subConsumingInjector = consumingInjector.module();
+				});
+
+				it('should allow children to inherit through links', function () {
+					var result = subConsumingInjector.get('foo');
+					result.foo.should.have.property('bar', true);
+				});
+			});
 		});
 	});
 });
