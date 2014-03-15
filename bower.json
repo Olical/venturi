@@ -1,0 +1,29 @@
+{
+  "name": "venturi",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Wolfy87/venturi",
+  "authors": [
+    "Oliver Caldwell http://oli.me.uk/"
+  ],
+  "description": "Hierarchical dependency injection",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "di",
+    "dependency injection",
+    "dependencies",
+    "injector"
+  ],
+  "license": "Unlicence",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
