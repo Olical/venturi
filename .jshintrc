@@ -1,5 +1,6 @@
 {
 	"predef": {
+		"define": true,
 		"describe": true,
 		"beforeEach": true,
 		"afterEach": true,
