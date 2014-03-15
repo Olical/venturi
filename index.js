@@ -1,7 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
-
 /**
  * A hierarchical dependency injector.
  *
@@ -13,7 +11,7 @@ function Venturi(links, parent) {
 
 	if (parent) {
 		this.parent = parent;
-		parentConstructors = _.create(parent.constructors);
+		parentConstructors = Object.create(parent.constructors);
 	}
 
 	this.instances = {};
@@ -37,7 +35,7 @@ function Venturi(links, parent) {
  * @return {Object} A new Venturi instance that uses the parent instance as the prototype for it's constructors object.
  */
 Venturi.prototype.module = function () {
-	var links = _.toArray(arguments);
+	var links = Array.prototype.slice.call(arguments);
 	return new Venturi(links, this);
 };
 
@@ -61,10 +59,13 @@ Venturi.prototype.set = function (key, constructor) {
  */
 Venturi.prototype.get = function () {
 	var dependencies = {};
+	var key;
+	var i;
 
-	_.forEach(arguments, function (key) {
+	for (i = 0; i <= arguments.length; i++) {
+		key = arguments[i];
 		dependencies[key] = this.getOrConstruct(key);
-	}, this);
+	}
 
 	return dependencies;
 };
@@ -86,9 +87,9 @@ Venturi.prototype.getOrConstruct = function (key) {
 	var constructor;
 	var instance;
 
-	if (!_.has(this.instances, key)) {
-		if (_.isFunction(localConstructor)) {
-			if (_.has(this.constructors, key)) {
+	if (!this.instances.hasOwnProperty(key)) {
+		if (typeof localConstructor === 'function') {
+			if (this.constructors.hasOwnProperty(key)) {
 				matches.direct = localConstructor;
 			}
 			else {
@@ -125,17 +126,17 @@ Venturi.prototype.getOrConstruct = function (key) {
  * @return {*} Potential instance returned by a linked object.
  */
 Venturi.prototype.getFromLinks = function (key) {
+	var links = this.links;
 	var instance;
+	var link;
+	var i;
 
-	_.forEach(this.links, function (link) {
+	for (i = 0; i < links.length && typeof instance === 'undefined'; i++) {
+		link = links[i];
 		instance = link.getOrConstruct(key);
+	}
 
-		if (!_.isUndefined(instance)) {
-			return false;
-		}
-	});
-
-	if (_.isUndefined(instance) && this.parent) {
+	if (typeof instance === 'undefined' && this.parent) {
 		instance = this.parent.getFromLinks(key);
 	}
 

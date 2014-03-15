@@ -28,7 +28,7 @@
     "type": "git",
     "url": "https://github.com/Wolfy87/venturi.git"
   },
-  "dependencies": {
+  "devDependencies": {
     "lodash": "^2.4.1"
   }
 }
