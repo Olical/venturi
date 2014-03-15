@@ -140,6 +140,10 @@ var linkedInjector = injector.module(childInjector);
 // Links are gathered up the tree, so each child inherits it's parents links!
 ```
 
+## Package managers and module systems
+
+You can install Venturi through [npm][] or [bower][]. It supports [AMD][] ([RequireJS][]), [CommonJS][] ([node][]) and global definition (a normal script tag) thanks to the technique I detail in [one of my posts][module-post].
+
 ## Unlicense
 
 This is free and unencumbered software released into the public domain.
@@ -172,3 +176,10 @@ For more information, please refer to <http://unlicense.org/>
 [di]: https://en.wikipedia.org/wiki/Dependency_injection
 [travis]: https://travis-ci.org/Wolfy87/venturi
 [travis-state]: https://travis-ci.org/Wolfy87/venturi.png
+[npm]: https://www.npmjs.org/
+[bower]: http://bower.io/
+[module-post]: http://oli.me.uk/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/
+[amd]: http://requirejs.org/docs/whyamd.html
+[requirejs]: http://requirejs.org/
+[commonjs]: http://wiki.commonjs.org/wiki/CommonJS
+[node]: http://nodejs.org/

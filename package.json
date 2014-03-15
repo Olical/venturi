@@ -1,6 +1,6 @@
 {
   "name": "venturi",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Hierarchical dependency injection",
   "scripts": {
     "test": "gulp"
@@ -24,7 +24,11 @@
     "jshint-stylish": "^0.1.5",
     "sinon": "^1.9.0"
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wolfy87/venturi.git"
+  },
+  "devDependencies": {
     "lodash": "^2.4.1"
   }
 }
